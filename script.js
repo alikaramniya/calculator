@@ -14,7 +14,7 @@ let backspace = document.getElementById("backspace");
 let equal = document.getElementById("equal");
 
 let operator,
-  checkEqual = false, // TODO: انجام عملیات checkEqual
+  checkEqual = false,
   number = 0;
 
 function setNumber(input) {
@@ -23,9 +23,23 @@ function setNumber(input) {
       display.textContent += ".";
     }
 
-    if (input != ".") {
+    if (display.textContent.includes(".") && input === "0") {
+      display.textContent += input;
+    } else if (input != ".") {
       display.textContent += input;
       display.textContent = Number(display.textContent);
+    }
+
+    if (checkEqual) {
+      let lastChar = Array.from(display.textContent).pop();
+
+      if (lastChar == ".") {
+        display.textContent = "0.";
+      } else {
+        display.textContent = lastChar;
+      }
+
+      checkEqual = false;
     }
   }
 }
@@ -71,7 +85,6 @@ function calculate(e) {
       operator = "/";
       break;
   }
-  console.log(operator);
 }
 
 square.addEventListener("click", function () {
@@ -97,10 +110,16 @@ function calculateResult() {
       display.textContent = Number(number) / Number(display.textContent);
       break;
   }
+
+  checkEqual = true;
+
+  number == 0;
 }
 
 equal.addEventListener("click", function () {
-  calculateResult();
+  if (number) {
+    calculateResult();
+  }
 });
 
 backspace.addEventListener("click", function () {
@@ -171,7 +190,7 @@ document.addEventListener("keydown", function (e) {
   }
 
   // Equal
-  if (e.code === 'Equal' || e.code === 'Enter') {
-    calculateResult()
+  if (e.code === "Equal" || e.code === "Enter") {
+    calculateResult();
   }
 });
