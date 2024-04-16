@@ -14,6 +14,8 @@ let backspace = document.getElementById("backspace");
 let equal = document.getElementById("equal");
 
 let operator,
+  signValue,
+  valIsZero = true,
   checkEqual = false,
   number = 0;
 
@@ -29,6 +31,12 @@ function setNumber(input) {
       display.textContent += input;
       display.textContent = Number(display.textContent);
     }
+
+    if (valIsZero && signValue === "-") {
+      display.textContent = "-" + input;
+    }
+
+    valIsZero = false;
 
     if (checkEqual) {
       let lastChar = Array.from(display.textContent).pop();
@@ -68,10 +76,18 @@ plus.addEventListener("click", calculate);
 multiply.addEventListener("click", calculate);
 
 function calculate(e) {
+  let operatorValue = e.target.textContent;
+
+  if (valIsZero) {
+    signValue = operatorValue;
+
+    return;
+  }
+
   number = Number(display.textContent);
   display.textContent = 0;
 
-  switch (e.target.textContent) {
+  switch (operatorValue) {
     case "+":
       operator = "+";
       break;
@@ -111,9 +127,7 @@ function calculateResult() {
       break;
   }
 
-  checkEqual = true;
-
-  number == 0;
+  [checkEqual, valIsZero, number] = [true, true, 0];
 }
 
 equal.addEventListener("click", function () {
