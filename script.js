@@ -1,3 +1,5 @@
+"use strict"
+
 let buttons = document.getElementById("buttons");
 let display = document.getElementById("display");
 
